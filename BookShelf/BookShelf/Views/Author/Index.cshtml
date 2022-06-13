@@ -1,0 +1,58 @@
+﻿@model IEnumerable<BookShelf.Models.Author>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    if('@TempData["Message"]' !=null){
+       if('@TempData["Message"]' == "Added") {
+          toastr.success('Added Successfully');
+       }
+       else if('@TempData["Message"]'=='Deleted'){
+          toastr.error('Deleted Successfully');
+       }
+       else if('@TempData["Message"]'=='Updated'){
+          toastr.info('Updated  Successfully');
+       }
+       else if('@TempData["Message"]'=='NotExists'){
+          toastr.error('Record doesnot exists');
+       }
+    }
+    });
+
+</script>
+<h1>Author</h1>
+<div class=col-2>
+    <a class="bi bi-plus-circle btn btn-primary" asp-controller="author" asp-action="create">Add Author</a>
+</div>
+@if (ViewBag.NoData != null)
+{
+    <div class=container><h1>@ViewBag.NoData</h1></div>
+}
+else
+{
+    <div class="container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model=>model.Name)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            @foreach (Author item in Model)
+            {
+                <tr>
+                    <td> @Html.DisplayFor(modelItem=>item.Name)</td>
+                    <td>
+                        <a class="bi bi-pencil-square btn btn-primary" asp-controller="Author" asp-action="Edit" asp-route-id=@item.AuthorId></a>
+                        <a class="bi bi-trash btn btn-danger" asp-controller="Author" asp-action="Delete" asp-route-id=@item.AuthorId></a>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}

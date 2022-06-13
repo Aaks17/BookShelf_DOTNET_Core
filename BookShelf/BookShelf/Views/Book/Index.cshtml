@@ -1,0 +1,81 @@
+﻿@model IEnumerable<BookShelf.Models.Book>
+
+@{
+    ViewData["Title"] = "Create";
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    if('@TempData["Message"]' !=null){
+       if('@TempData["Message"]' == "Added") {
+          toastr.success('Added Successfully');
+       }
+       else if('@TempData["Message"]'=='Deleted'){
+          toastr.error('Deleted Successfully');
+       }
+       else if('@TempData["Message"]'=='Updated'){
+          toastr.info('Updated  Successfully');
+       }
+       else if('@TempData["Message"]'=='NotExists'){
+          toastr.error('Record doesnot exists');
+       }
+    }
+    });
+
+</script>
+<h1>Books</h1>
+<div class=col-2>
+    <a class="bi bi-plus-circle btn btn-primary" asp-controller="Book" asp-action="create">Add Book</a>
+</div>
+@if (ViewBag.NoData != null)
+{
+    <div class=container><h1>@ViewBag.NoData</h1></div>
+}
+else
+{
+    <div class="container">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Summary)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Author)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Summary)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Author.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.Name)
+                        </td>
+                        <td>
+                            <a class="bi bi-pencil-square btn btn-primary" asp-controller="Book" asp-action="Edit" asp-route-id=@item.BookId></a>
+                            <a class="bi bi-trash btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id=@item.BookId></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
